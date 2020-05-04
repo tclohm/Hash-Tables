@@ -16,6 +16,8 @@ class HashTable:
 
     Implement this.
     """
+    def __init__(self, capacity):
+        self.capacity = capacity
 
     def fnv1(self, key):
         """
@@ -23,6 +25,8 @@ class HashTable:
 
         Implement this, and/or DJB2.
         """
+        hash_ = 14695981039346656037
+        for byte in 
 
     def djb2(self, key):
         """
