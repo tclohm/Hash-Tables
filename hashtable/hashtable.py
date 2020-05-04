@@ -18,6 +18,7 @@ class HashTable:
     """
     def __init__(self, capacity):
         self.capacity = capacity
+        self.storage = [None] * capacity 
 
     def fnv1(self, key):
         """
@@ -25,8 +26,14 @@ class HashTable:
 
         Implement this, and/or DJB2.
         """
-        hash_ = 14695981039346656037
-        for byte in 
+        hash_value = 0
+
+        for byte in key.encode('utf-8'):
+            hash_value = hash_value * 0x100000001b3
+            hash_value = hash_value ^ byte(byte)
+        return hash_value
+
+        
 
     def djb2(self, key):
         """
@@ -34,6 +41,11 @@ class HashTable:
 
         Implement this, and/or FNV-1.
         """
+        hash_value = 5381
+
+        for byte in key.encode('utf-8'):
+            hash_value = ((hash_value * 33) + hash_value) + byte # hash * 33 + byte
+        return hash_value
 
     def hash_index(self, key):
         """
@@ -51,6 +63,9 @@ class HashTable:
 
         Implement this.
         """
+        index = self.hash_index(key)
+        self.storage[index] = HashTableEntry(key, value)
+
 
     def delete(self, key):
         """
@@ -60,6 +75,9 @@ class HashTable:
 
         Implement this.
         """
+        index = self.hash_index(key)
+        self.storage[index] = None
+        
 
     def get(self, key):
         """
@@ -69,6 +87,8 @@ class HashTable:
 
         Implement this.
         """
+        index = self.hash_index(key)
+        return self.storage[index].value if self.storage[index] is not None else None
 
     def resize(self):
         """
@@ -77,6 +97,16 @@ class HashTable:
 
         Implement this.
         """
+        
+
+    def __setitem__(self, key, value):
+        return self.put(key, value)
+
+    def __getitem__(self, key):
+        return self.get(key)
+
+    def __delitem__(self, key):
+        return self.delete(key)
 
 if __name__ == "__main__":
     ht = HashTable(2)
