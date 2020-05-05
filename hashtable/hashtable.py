@@ -63,8 +63,26 @@ class HashTable:
 
         Implement this.
         """
+        ## simple implemntation
+        # index = self.hash_index(key)
+        # self.storage[index] = HashTableEntry(key, value)
+
+        # find the has index
+        # search the list for the key
+        # if there, replace the value
+        # if not, append new record to the list
         index = self.hash_index(key)
-        self.storage[index] = HashTableEntry(key, value)
+        node = self.storage[index]
+
+        if node is None:
+            self.storage[index] = HashTableEntry(key, value)
+
+        while node:
+            if node.key == key:
+                node.value = value
+            else:
+                node = node.next
+
 
 
     def delete(self, key):
@@ -75,8 +93,32 @@ class HashTable:
 
         Implement this.
         """
+        # Simple Implementation
+        # index = self.hash_index(key)
+        # self.storage[index] = None
+
+        # Find the index hash table
+        # Search the list for the key
+        # If found delete the node from the list and return warning
+        # else return none
         index = self.hash_index(key)
-        self.storage[index] = None
+        node = self.storage[index]
+        
+        prev = None
+        while node is not None and node.key != key:
+            # previous node for linking our node.next when node is deleted
+            prev = node
+            node = node.next
+
+            if node is None:
+                return "Warning, key was not found"
+            else:
+                # if prev is None, prev is head
+                if prev is None:
+                    self.storage[index] = node.next
+                else:
+                    prev.next = node.next
+
         
 
     def get(self, key):
@@ -87,8 +129,26 @@ class HashTable:
 
         Implement this.
         """
+        # simple implementation
+        # index = self.hash_index(key)
+        # return self.storage[index].value if self.storage[index] is not None else None
+
+        # find hash index
+        # search list for key
+        # if found return value
+        # else return none
+
         index = self.hash_index(key)
-        return self.storage[index].value if self.storage[index] is not None else None
+        node = self.storage[index]
+
+        if node == None:
+            return None
+
+        while node is not None:
+            if node.key == key:
+                return node.value
+            else:
+                node = node.next
 
     def resize(self):
         """
@@ -97,7 +157,6 @@ class HashTable:
 
         Implement this.
         """
-        
 
     def __setitem__(self, key, value):
         return self.put(key, value)
