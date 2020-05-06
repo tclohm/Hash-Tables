@@ -111,7 +111,8 @@ class HashTable:
         
         prev = None
         while node is not None:
-            # previous node for linking our node.next when node is deleted
+            # if the previous node is true, 
+            # previous.next equals node.next
             if node.key == key:
                 if prev:
                     prev.next = node.next
