@@ -77,11 +77,16 @@ class HashTable:
         if node is None:
             self.storage[index] = HashTableEntry(key, value)
 
-        while node:
+        while node is not None:
             if node.key == key:
                 node.value = value
-            else:
-                node = node.next
+            if node.next is None:
+                node.next = HashTableEntry(key, value)
+                break
+
+            node = node.next
+            
+
 
 
 
@@ -105,19 +110,17 @@ class HashTable:
         node = self.storage[index]
         
         prev = None
-        while node is not None and node.key != key:
+        while node is not None:
             # previous node for linking our node.next when node is deleted
+            if node.key == key:
+                if prev:
+                    prev.next = node.next
+                else:
+                    self.storage[index] = node.next
             prev = node
             node = node.next
+        return "Item not found"
 
-            if node is None:
-                return "Warning, key was not found"
-            else:
-                # if prev is None, prev is head
-                if prev is None:
-                    self.storage[index] = node.next
-                else:
-                    prev.next = node.next
 
         
 
@@ -141,14 +144,16 @@ class HashTable:
         index = self.hash_index(key)
         node = self.storage[index]
 
-        if node == None:
+        if node is None:
             return None
 
         while node is not None:
             if node.key == key:
                 return node.value
-            else:
-                node = node.next
+            if node.next is None:
+                return None
+
+            node = node.next
 
     def resize(self):
         """
