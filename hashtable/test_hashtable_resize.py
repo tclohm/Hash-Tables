@@ -168,6 +168,7 @@ class TestHashTable(unittest.TestCase):
         ht.put("key-9", "val-9")
 
         ht.resize(1024)
+        print("resizing for 1024", len(ht.storage))
 
         self.assertTrue(len(ht.storage) == 1024)
 

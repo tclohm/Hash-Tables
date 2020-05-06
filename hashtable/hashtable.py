@@ -18,7 +18,8 @@ class HashTable:
     """
     def __init__(self, capacity):
         self.capacity = capacity
-        self.storage = [None] * capacity 
+        self.storage = [None] * capacity
+        self.element_count = 0
 
     def fnv1(self, key):
         """
@@ -75,13 +76,22 @@ class HashTable:
         node = self.storage[index]
 
         if node is None:
+            self.element_count += 1
             self.storage[index] = HashTableEntry(key, value)
+
+            if (self.element_count / self.capacity) >= 0.7:
+                self.resize()
 
         while node is not None:
             if node.key == key:
                 node.value = value
             if node.next is None:
+                self.element_count += 1
                 node.next = HashTableEntry(key, value)
+
+                if (self.element_count / self.capacity) >= 0.7:
+                    self.resize()
+
                 break
 
             node = node.next
@@ -113,16 +123,24 @@ class HashTable:
         while node is not None:
             # node.key is key
                 # if the previous node
-                    # previous.next equals node.next
+                    # previous.next equals node.next (essential removing the node from the linked list)
                 # else our hashtable is at the head, self.storage[index] = node.next
             # iterations
             # prev is node
             # node is node.next
             if node.key == key:
                 if prev:
+                    self.element_count -= 1
                     prev.next = node.next
+
+                    if (self.element_count / self.capacity) <= 0.2:
+                        self.resize()
                 else:
+                    self.element_count -= 1
                     self.storage[index] = node.next
+
+                    if (self.element_count / self.capacity) <= 0.2:
+                        self.resize()
             prev = node
             node = node.next
         return "Item not found"
@@ -161,13 +179,42 @@ class HashTable:
 
             node = node.next
 
-    def resize(self):
+    def resize(self, new_capacity=0):
         """
         Doubles the capacity of the hash table and
         rehash all key/value pairs.
 
         Implement this.
         """
+        if new_capacity == 0:
+            new_capacity = 2
+        else:
+            new_capacity = new_capacity
+
+        if (self.element_count / self.capacity) >= 0.7:
+            self.capacity = int(self.capacity * 2)
+
+        elif (self.element_count / self.capacity) <= 0.2:
+            self.capacity = int(self.capacity / 2)
+
+        else:
+            self.capacity = new_capacity
+
+        new_storage = [None] * self.capacity
+        for index in self.storage:
+            node = index
+            while node is not None:
+                h = self.hash_index(node.key)
+                if new_storage[h] is None:
+                    new_storage[h] = node
+                else:
+                    new_storage[h].next = node
+                node = node.next
+        self.storage = new_storage
+
+    def __len__(self):
+        return self.capacity      
+
 
     def __setitem__(self, key, value):
         return self.put(key, value)
