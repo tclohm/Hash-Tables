@@ -111,8 +111,13 @@ class HashTable:
         
         prev = None
         while node is not None:
-            # if the previous node is true, 
-            # previous.next equals node.next
+            # node.key is key
+                # if the previous node
+                    # previous.next equals node.next
+                # else our hashtable is at the head, self.storage[index] = node.next
+            # iterations
+            # prev is node
+            # node is node.next
             if node.key == key:
                 if prev:
                     prev.next = node.next
