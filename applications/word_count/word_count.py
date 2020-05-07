@@ -4,7 +4,7 @@ def word_count(s):
 
 	def remove_extra(s):
 		result = ""
-		for index, char in enumerate(s):
+		for char in s:
 			if char not in '":;,.-+=/\\|[]{}()*^&':
 				if char in ['\t', '\r', '\n']:
 					result += " "
