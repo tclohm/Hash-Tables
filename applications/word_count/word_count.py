@@ -1,6 +1,6 @@
 def word_count(s):
 
-	cache = {}
+	count = {}
 
 	def remove_extra(s):
 		result = ""
@@ -25,7 +25,7 @@ def word_count(s):
 		return c
 
 	no_extra = remove_extra(s)
-	return counter(no_extra, cache)
+	return counter(no_extra, count)
 
 if __name__ == "__main__":
     print(word_count(""))
