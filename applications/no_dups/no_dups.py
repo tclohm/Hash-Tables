@@ -1,5 +1,13 @@
 def no_dups(s):
-    # Implement me.
+	# Implement me.
+	result = ""
+	if s == "":
+		return s
+	for word in s.split(" "):
+		if word not in result:
+			result += word + " "
+	return result[:-1]
+	# return result
 
 
 if __name__ == "__main__":
