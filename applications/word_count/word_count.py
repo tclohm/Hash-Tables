@@ -1,6 +1,31 @@
 def word_count(s):
-    # Implement me.
 
+	count = {}
+
+	def remove_extra(s):
+		result = ""
+		for char in s:
+			if char not in '":;,.-+=/\\|[]{}()*^&':
+				if char in ['\t', '\r', '\n']:
+					result += " "
+				else:
+					result += char
+		return result
+
+
+	def counter(s, c):
+		array = s.lower().split(" ")
+		for word in array:
+			if word == "":
+				continue
+			elif word not in c:
+				c[word] = 1
+			else:
+				c[word] += 1
+		return c
+
+	no_extra = remove_extra(s)
+	return counter(no_extra, count)
 
 if __name__ == "__main__":
     print(word_count(""))
